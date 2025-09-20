@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Interactive AR Brochure</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading AR Experience...</p>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Overlay -->
+    <div id="instructions" class="overlay">
+        <div class="instruction-content">
+            <h2>How to Use</h2>
+            <p>1. Point your camera at the brochure pages</p>
+            <p>2. Keep the page steady and well-lit</p>
+            <p>3. Multiple pages can be tracked simultaneously</p>
+            <button id="start-ar">Start AR Experience</button>
+        </div>
+    </div>
+
+    <!-- AR Scene -->
+    <a-scene 
+        id="ar-scene"
+        mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 8; filterMinCF: 0.0001; filterBeta: 0.01"
+        color-space="sRGB" 
+        renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true"
+        vr-mode-ui="enabled: false" 
+        device-orientation-permission-ui="enabled: false"
+        gesture-detector
+        embedded
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+        
+        <!-- Assets -->
+        <a-assets>
+            <!-- Videos for different pages -->
+            <video id="video-page1" src="./assets/videos/page1-video.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+            <video id="video-page3" src="./assets/videos/page3-video.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+            <video id="video-page5" src="./assets/videos/page5-video.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+            <video id="video-page7" src="./assets/videos/page7-video.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+            
+            <!-- 3D Models for different pages -->
+            <a-asset-item id="model-page2" src="./assets/models/model1.gltf"></a-asset-item>
+            <a-asset-item id="model-page4" src="./assets/models/model2.gltf"></a-asset-item>
+            <a-asset-item id="model-page6" src="./assets/models/model3.gltf"></a-asset-item>
+            <a-asset-item id="model-page8" src="./assets/models/model4.gltf"></a-asset-item>
+            
+            <!-- Sounds (optional) -->
+            <audio id="detect-sound" src="./assets/sounds/detect.mp3" preload="auto"></audio>
+        </a-assets>
+
+        <!-- Camera -->
+        <a-camera 
+            position="0 0 0" 
+            look-controls="enabled: false" 
+            cursor="fuse: false; rayOrigin: mouse;" 
+            raycaster="near: 10; far: 10000; objects: .raycastable">
+        </a-camera>
+
+        <!-- AR Markers and Content -->
+        
+        <!-- Page 1: Video Content -->
+        <a-entity id="marker-page1" mindar-image-target="targetIndex: 0">
+            <a-plane 
+                src="#video-page1" 
+                position="0 0 0" 
+                rotation="-90 0 0" 
+                width="1.2" 
+                height="0.8"
+                material="transparent: true; alphaTest: 0.1"
+                animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
+                animation__out="property: scale; from: 1 1 1; to: 0 0 0; dur: 300; easing: easeInBack">
+            </a-plane>
+            <!-- Play button overlay -->
+            <a-circle 
+                class="raycastable play-button"
+                position="0 0 0.01"
+                radius="0.1"
+                color="#FF6B6B"
+                material="transparent: true; opacity: 0.8"
+                animation="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; dir: alternate; loop: true; dur: 1000">
+                <a-triangle 
+                    position="0.02 0 0.001"
+                    scale="0.05 0.05 0.05"
+                    rotation="0 0 90"
+                    color="white">
+                </a-triangle>
+            </a-circle>
+        </a-entity>
+
+        <!-- Page 2: 3D Model -->
+        <a-entity id="marker-page2" mindar-image-target="targetIndex: 1">
+            <a-gltf-model 
+                src="#model-page2" 
+                position="0 0 0" 
+                scale="0.15 0.15 0.15"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+                animation__in="property: scale; from: 0 0 0; to: 0.15 0.15 0.15; dur: 800; easing: easeOutElastic"
+                animation__out="property: scale; from: 0.15 0.15 0.15; to: 0 0 0; dur: 400; easing: easeInBack">
+            </a-gltf-model>
+            <!-- Info badge -->
+            <a-plane 
+                position="0 0.4 0" 
+                width="0.6" 
+                height="0.1" 
+                color="#4ECDC4" 
+                material="transparent: true; opacity: 0.9"
+                text="value: 3D Model View; align: center; color: white; width: 8">
+            </a-plane>
+        </a-entity>
+
+        <!-- Page 3: Video Content -->
+        <a-entity id="marker-page3" mindar-image-target="targetIndex: 2">
+            <a-plane 
+                src="#video-page3" 
+                position="0 0 0" 
+                rotation="-90 0 0" 
+                width="1.2" 
+                height="0.8"
+                material="transparent: true; alphaTest: 0.1"
+                animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
+                animation__out="property: scale; from: 1 1 1; to: 0 0 0; dur: 300; easing: easeInBack">
+            </a-plane>
+        </a-entity>
+
+        <!-- Page 4: 3D Model with interaction -->
+        <a-entity id="marker-page4" mindar-image-target="targetIndex: 3" gesture-handler>
+            <a-gltf-model 
+                src="#model-page4" 
+                position="0 0 0" 
+                scale="0.12 0.12 0.12"
+                class="raycastable interactive-model"
+                animation__hover="property: scale; from: 0.12 0.12 0.12; to: 0.14 0.14 0.14; dur: 200; startEvents: mouseenter"
+                animation__leave="property: scale; from: 0.14 0.14 0.14; to: 0.12 0.12 0.12; dur: 200; startEvents: mouseleave"
+                animation__in="property: scale; from: 0 0 0; to: 0.12 0.12 0.12; dur: 800; easing: easeOutElastic">
+            </a-gltf-model>
+        </a-entity>
+
+        <!-- Page 5: Video Content -->
+        <a-entity id="marker-page5" mindar-image-target="targetIndex: 4">
+            <a-plane 
+                src="#video-page5" 
+                position="0 0 0" 
+                rotation="-90 0 0" 
+                width="1.2" 
+                height="0.8"
+                material="transparent: true; alphaTest: 0.1"
+                animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack">
+            </a-plane>
+        </a-entity>
+
+        <!-- Page 6: 3D Model -->
+        <a-entity id="marker-page6" mindar-image-target="targetIndex: 5">
+            <a-gltf-model 
+                src="#model-page6" 
+                position="0 0 0" 
+                scale="0.18 0.18 0.18"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
+                animation__bounce="property: position; from: 0 0 0; to: 0 0.05 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"
+                animation__in="property: scale; from: 0 0 0; to: 0.18 0.18 0.18; dur: 800; easing: easeOutElastic">
+            </a-gltf-model>
+        </a-entity>
+
+        <!-- Page 7: Video Content -->
+        <a-entity id="marker-page7" mindar-image-target="targetIndex: 6">
+            <a-plane 
+                src="#video-page7" 
+                position="0 0 0" 
+                rotation="-90 0 0" 
+                width="1.2" 
+                height="0.8"
+                material="transparent: true; alphaTest: 0.1"
+                animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack">
+            </a-plane>
+        </a-entity>
+
+        <!-- Page 8: 3D Model -->
+        <a-entity id="marker-page8" mindar-image-target="targetIndex: 7">
+            <a-gltf-model 
+                src="#model-page8" 
+                position="0 0 0" 
+                scale="0.2 0.2 0.2"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 12000"
+                animation__in="property: scale; from: 0 0 0; to: 0.2 0.2 0.2; dur: 800; easing: easeOutElastic">
+            </a-gltf-model>
+        </a-entity>
+
+        <!-- Lighting -->
+        <a-light type="ambient" intensity="0.4"></a-light>
+        <a-light type="directional" position="1 1 0" intensity="0.6"></a-light>
+    </a-scene>
+
+    <!-- UI Controls -->
+    <div id="ui-controls">
+        <button id="toggle-debug" class="control-btn">🔍</button>
+        <button id="reset-tracking" class="control-btn">🔄</button>
+        <div id="tracking-status">Ready</div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
