@@ -37,12 +37,11 @@
     <!-- AR Scene -->
     <a-scene
       id="ar-scene"
-      mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 8; filterMinCF: 0.0001; filterBeta: 0.01"
+      mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 8"
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
-      gesture-detector
       embedded
       style="
         position: fixed;
@@ -135,16 +134,14 @@
       <!-- AR Markers and Content -->
 
       <!-- Page 1: Video Content -->
-      <a-entity id="marker-page1" mindar-image-target="targetIndex: 0">
+      <a-entity id="marker-page1" mindar-image-target="targetIndex: 0" visible="false">
         <a-plane
           src="#video-page1"
           position="0 0 0"
           rotation="-90 0 0"
           width="1.2"
           height="0.8"
-          material="transparent: true; alphaTest: 0.1"
-          animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
-          animation__out="property: scale; from: 1 1 1; to: 0 0 0; dur: 300; easing: easeInBack"
+          material="transparent: true"
         >
         </a-plane>
         <!-- Play button overlay -->
@@ -167,15 +164,13 @@
       </a-entity>
 
       <!-- Page 2: 3D Model -->
-      <a-entity id="marker-page2" mindar-image-target="targetIndex: 1">
+      <a-entity id="marker-page2" mindar-image-target="targetIndex: 1" visible="false">
         <a-gltf-model
           src="#model-page2"
           position="0 0 0"
           scale="0.15 0.15 0.15"
           rotation="0 0 0"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
-          animation__in="property: scale; from: 0 0 0; to: 0.15 0.15 0.15; dur: 800; easing: easeOutElastic"
-          animation__out="property: scale; from: 0.15 0.15 0.15; to: 0 0 0; dur: 400; easing: easeInBack"
         >
         </a-gltf-model>
         <!-- Info badge -->
@@ -191,16 +186,14 @@
       </a-entity>
 
       <!-- Page 3: Video Content -->
-      <a-entity id="marker-page3" mindar-image-target="targetIndex: 2">
+      <a-entity id="marker-page3" mindar-image-target="targetIndex: 2" visible="false">
         <a-plane
           src="#video-page3"
           position="0 0 0"
           rotation="-90 0 0"
           width="1.2"
           height="0.8"
-          material="transparent: true; alphaTest: 0.1"
-          animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
-          animation__out="property: scale; from: 1 1 1; to: 0 0 0; dur: 300; easing: easeInBack"
+          material="transparent: true"
         >
         </a-plane>
       </a-entity>
@@ -208,70 +201,62 @@
       <!-- Page 4: 3D Model with interaction -->
       <a-entity
         id="marker-page4"
-        mindar-image-target="targetIndex: 3"
-        gesture-handler
+        mindar-image-target="targetIndex: 3" 
+        visible="false"
       >
         <a-gltf-model
           src="#model-page4"
           position="0 0 0"
           scale="0.12 0.12 0.12"
-          class="raycastable interactive-model"
-          animation__hover="property: scale; from: 0.12 0.12 0.12; to: 0.14 0.14 0.14; dur: 200; startEvents: mouseenter"
-          animation__leave="property: scale; from: 0.14 0.14 0.14; to: 0.12 0.12 0.12; dur: 200; startEvents: mouseleave"
-          animation__in="property: scale; from: 0 0 0; to: 0.12 0.12 0.12; dur: 800; easing: easeOutElastic"
         >
         </a-gltf-model>
       </a-entity>
 
       <!-- Page 5: Video Content -->
-      <a-entity id="marker-page5" mindar-image-target="targetIndex: 4">
+      <a-entity id="marker-page5" mindar-image-target="targetIndex: 4" visible="false">
         <a-plane
           src="#video-page5"
           position="0 0 0"
           rotation="-90 0 0"
           width="1.2"
           height="0.8"
-          material="transparent: true; alphaTest: 0.1"
-          animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
+          material="transparent: true"
         >
         </a-plane>
       </a-entity>
 
       <!-- Page 6: 3D Model -->
-      <a-entity id="marker-page6" mindar-image-target="targetIndex: 5">
+      <a-entity id="marker-page6" mindar-image-target="targetIndex: 5" visible="false">
         <a-gltf-model
           src="#model-page6"
           position="0 0 0"
           scale="0.18 0.18 0.18"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
           animation__bounce="property: position; from: 0 0 0; to: 0 0.05 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"
-          animation__in="property: scale; from: 0 0 0; to: 0.18 0.18 0.18; dur: 800; easing: easeOutElastic"
         >
         </a-gltf-model>
       </a-entity>
 
       <!-- Page 7: Video Content -->
-      <a-entity id="marker-page7" mindar-image-target="targetIndex: 6">
+      <a-entity id="marker-page7" mindar-image-target="targetIndex: 6" visible="false">
         <a-plane
           src="#video-page7"
           position="0 0 0"
           rotation="-90 0 0"
           width="1.2"
           height="0.8"
-          material="transparent: true; alphaTest: 0.1"
-          animation__in="property: scale; from: 0 0 0; to: 1 1 1; dur: 500; easing: easeOutBack"
+          material="transparent: true"
         >
         </a-plane>
       </a-entity>
 
       <!-- Page 8: 3D Model -->
-      <a-entity id="marker-page8" mindar-image-target="targetIndex: 7">
+      <a-entity id="marker-page8" mindar-image-target="targetIndex: 7" visible="false">
         <a-gltf-model
           src="#model-page8"
           position="0 0 0"
           scale="0.2 0.2 0.2"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 12000"
-          animation__in="property: scale; from: 0 0 0; to: 0.2 0.2 0.2; dur: 800; easing: easeOutElastic"
         >
         </a-gltf-model>
       </a-entity>
