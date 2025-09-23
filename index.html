@@ -129,7 +129,8 @@
       <!-- Page 1: Video Content -->
       <a-marker
         id="marker-page1"
-        preset="hiro"
+        type="pattern"
+        url="./assets/markers/pattern-page1.patt"
         smooth="true"
         smoothCount="10"
         smoothTolerance="0.01"
@@ -166,7 +167,8 @@
       <!-- Page 2: 3D Model -->
       <a-marker
         id="marker-page2"
-        preset="kanji"
+        type="pattern"
+        url="./assets/markers/pattern-page2.patt"
         smooth="true"
         smoothCount="10"
         smoothTolerance="0.01"
@@ -326,9 +328,23 @@
     </div>
 
     <!-- Play button overlay for video interaction -->
-    <div id="playButton" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-         background: rgba(0,0,0,0.7); color: white; padding: 15px 30px; border-radius: 25px; 
-         z-index: 1000; cursor: pointer; font-size: 16px; border: none;">
+    <div
+      id="playButton"
+      style="
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 25px;
+        z-index: 1000;
+        cursor: pointer;
+        font-size: 16px;
+        border: none;
+      "
+    >
       Tap to Enable Video & Audio
     </div>
 
