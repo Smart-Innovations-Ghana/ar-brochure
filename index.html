@@ -134,7 +134,11 @@
       <!-- AR Markers and Content -->
 
       <!-- Page 1: Video Content -->
-      <a-entity id="marker-page1" mindar-image-target="targetIndex: 0" visible="false">
+      <a-entity
+        id="marker-page1"
+        mindar-image-target="targetIndex: 0"
+        visible="false"
+      >
         <a-plane
           src="#video-page1"
           position="0 0 0"
@@ -164,7 +168,11 @@
       </a-entity>
 
       <!-- Page 2: 3D Model -->
-      <a-entity id="marker-page2" mindar-image-target="targetIndex: 1" visible="false">
+      <a-entity
+        id="marker-page2"
+        mindar-image-target="targetIndex: 1"
+        visible="false"
+      >
         <a-gltf-model
           src="#model-page2"
           position="0 0 0"
@@ -186,7 +194,11 @@
       </a-entity>
 
       <!-- Page 3: Video Content -->
-      <a-entity id="marker-page3" mindar-image-target="targetIndex: 2" visible="false">
+      <a-entity
+        id="marker-page3"
+        mindar-image-target="targetIndex: 2"
+        visible="false"
+      >
         <a-plane
           src="#video-page3"
           position="0 0 0"
@@ -201,7 +213,7 @@
       <!-- Page 4: 3D Model with interaction -->
       <a-entity
         id="marker-page4"
-        mindar-image-target="targetIndex: 3" 
+        mindar-image-target="targetIndex: 3"
         visible="false"
       >
         <a-gltf-model
@@ -213,7 +225,11 @@
       </a-entity>
 
       <!-- Page 5: Video Content -->
-      <a-entity id="marker-page5" mindar-image-target="targetIndex: 4" visible="false">
+      <a-entity
+        id="marker-page5"
+        mindar-image-target="targetIndex: 4"
+        visible="false"
+      >
         <a-plane
           src="#video-page5"
           position="0 0 0"
@@ -226,7 +242,11 @@
       </a-entity>
 
       <!-- Page 6: 3D Model -->
-      <a-entity id="marker-page6" mindar-image-target="targetIndex: 5" visible="false">
+      <a-entity
+        id="marker-page6"
+        mindar-image-target="targetIndex: 5"
+        visible="false"
+      >
         <a-gltf-model
           src="#model-page6"
           position="0 0 0"
@@ -238,7 +258,11 @@
       </a-entity>
 
       <!-- Page 7: Video Content -->
-      <a-entity id="marker-page7" mindar-image-target="targetIndex: 6" visible="false">
+      <a-entity
+        id="marker-page7"
+        mindar-image-target="targetIndex: 6"
+        visible="false"
+      >
         <a-plane
           src="#video-page7"
           position="0 0 0"
@@ -251,7 +275,11 @@
       </a-entity>
 
       <!-- Page 8: 3D Model -->
-      <a-entity id="marker-page8" mindar-image-target="targetIndex: 7" visible="false">
+      <a-entity
+        id="marker-page8"
+        mindar-image-target="targetIndex: 7"
+        visible="false"
+      >
         <a-gltf-model
           src="#model-page8"
           position="0 0 0"
@@ -268,8 +296,8 @@
 
     <!-- UI Controls -->
     <div id="ui-controls">
-      <button id="toggle-debug" class="control-btn">🔍</button>
-      <button id="reset-tracking" class="control-btn">🔄</button>
+      <button id="toggle-debug" class="control-btn">Debug</button>
+      <button id="reset-tracking" class="control-btn">Reset</button>
       <div id="tracking-status">Ready</div>
     </div>
 
