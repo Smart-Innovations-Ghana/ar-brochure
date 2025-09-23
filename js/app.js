@@ -20,15 +20,26 @@ class ARBrochureApp {
     }
   }
 
-  setupApp() {
-    this.setupUI();
-    this.setupScene();
-    this.setupMarkerTracking();
-    this.setupVideoControls();
-    this.setupUserInteraction();
-  }
+    setupApp() {
+        this.setupUI();
+        this.setupScene();
+        
+        // Start camera immediately, don't wait for assets
+        this.startCamera();
+        
+        this.setupMarkerTracking();
+        this.setupVideoControls();
+        this.setupUserInteraction();
+    }
 
-  setupUI() {
+    startCamera() {
+        // Force camera start regardless of asset loading
+        const arSystem = document.querySelector('a-scene').systems['arjs'];
+        if (arSystem) {
+            arSystem._initialize();
+        }
+        console.log('Attempting to start camera...');
+    }  setupUI() {
     const startButton = document.getElementById("start-ar");
     const instructionsOverlay = document.getElementById("instructions");
     const loadingScreen = document.getElementById("loading-screen");
