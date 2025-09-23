@@ -1,11 +1,12 @@
 class ARBrochureApp {
     constructor() {
         this.scene = null;
-        this.arSystem = null;
         this.markers = [];
         this.isARStarted = false;
         this.trackingStatus = 'ready';
         this.activeMarkers = new Set();
+        this.hasUserInteracted = false;
+        this.videos = [];
         
         this.init();
     }
@@ -24,7 +25,7 @@ class ARBrochureApp {
         this.setupScene();
         this.setupMarkerTracking();
         this.setupVideoControls();
-        this.setupGestureHandling();
+        this.setupUserInteraction();
     }
 
     setupUI() {
@@ -53,7 +54,7 @@ class ARBrochureApp {
             this.resetTracking();
         });
 
-        // Hide loading screen initially after 2 seconds
+        // Hide loading screen after scene loads
         setTimeout(() => {
             loadingScreen.classList.add('fade-out');
             setTimeout(() => loadingScreen.classList.add('hidden'), 500);
@@ -66,58 +67,60 @@ class ARBrochureApp {
         // Scene loaded event
         this.scene.addEventListener('loaded', () => {
             console.log('AR Scene loaded');
-            this.arSystem = this.scene.systems['mindar-image-system'];
-            this.setupARSystem();
-        });
-    }
-
-    setupARSystem() {
-        if (!this.arSystem) return;
-        
-        // Start AR system
-        this.arSystem.start().then(() => {
-            console.log('MindAR started successfully');
             this.isARStarted = true;
             this.updateTrackingStatus('ready');
-        }).catch((error) => {
-            console.error('Failed to start MindAR:', error);
-            this.updateTrackingStatus('error');
+        });
+
+        // AR.js ready event
+        this.scene.addEventListener('arjs-video-loaded', () => {
+            console.log('AR.js video loaded');
         });
     }
 
     setupMarkerTracking() {
         // Get all marker entities
-        for (let i = 0; i < 8; i++) {
-            const marker = document.querySelector(`#marker-page${i + 1}`);
+        const markerSelectors = [
+            '#marker-page1', '#marker-page2', '#marker-page3', '#marker-page4',
+            '#marker-page5', '#marker-page6', '#marker-page7', '#marker-page8'
+        ];
+
+        markerSelectors.forEach((selector, index) => {
+            const marker = document.querySelector(selector);
             if (marker) {
                 this.markers.push({
                     element: marker,
-                    index: i,
+                    index: index,
                     isTracked: false,
                     content: this.getMarkerContent(marker)
                 });
 
-                // Target found
-                marker.addEventListener('targetFound', (event) => {
-                    this.onMarkerFound(i);
+                // Marker found
+                marker.addEventListener('markerFound', () => {
+                    this.onMarkerFound(index);
                 });
 
-                // Target lost
-                marker.addEventListener('targetLost', (event) => {
-                    this.onMarkerLost(i);
+                // Marker lost
+                marker.addEventListener('markerLost', () => {
+                    this.onMarkerLost(index);
                 });
             }
-        }
+        });
     }
 
     getMarkerContent(marker) {
-        const video = marker.querySelector('a-plane[src*="video"]');
+        const videoPlane = marker.querySelector('a-plane[src*="video"]');
         const model = marker.querySelector('a-gltf-model');
         
+        let videoElement = null;
+        if (videoPlane) {
+            const videoSrc = videoPlane.getAttribute('src');
+            videoElement = document.querySelector(videoSrc);
+        }
+        
         return {
-            type: video ? 'video' : 'model',
-            element: video || model,
-            video: video ? document.querySelector(video.getAttribute('src')) : null
+            type: videoPlane ? 'video' : 'model',
+            element: videoPlane || model,
+            video: videoElement
         };
     }
 
@@ -125,18 +128,19 @@ class ARBrochureApp {
         console.log(`Marker ${markerIndex + 1} found`);
         
         const marker = this.markers[markerIndex];
-        marker.element.setAttribute('visible', true);
+        if (!marker) return;
+        
         marker.isTracked = true;
         this.activeMarkers.add(markerIndex);
         
         // Play detection sound
         const detectSound = document.querySelector('#detect-sound');
-        if (detectSound) {
+        if (detectSound && this.hasUserInteracted) {
             detectSound.play().catch(e => console.log('Sound play failed:', e));
         }
         
         // Handle video content
-        if (marker.content.type === 'video' && marker.content.video) {
+        if (marker.content.type === 'video' && marker.content.video && this.hasUserInteracted) {
             marker.content.video.play().catch(e => console.log('Video play failed:', e));
         }
         
@@ -148,7 +152,8 @@ class ARBrochureApp {
         console.log(`Marker ${markerIndex + 1} lost`);
         
         const marker = this.markers[markerIndex];
-        marker.element.setAttribute('visible', false);
+        if (!marker) return;
+        
         marker.isTracked = false;
         this.activeMarkers.delete(markerIndex);
         
@@ -162,27 +167,73 @@ class ARBrochureApp {
     }
 
     setupVideoControls() {
-        // Handle play button clicks
+        // Collect all video elements
+        this.videos = [
+            document.querySelector('#video-page1'),
+            document.querySelector('#video-page3'),
+            document.querySelector('#video-page5'),
+            document.querySelector('#video-page7')
+        ].filter(video => video !== null);
+
+        // Handle play button clicks on markers
         document.addEventListener('click', (event) => {
-            if (event.target.classList.contains('play-button')) {
-                const marker = event.target.closest('[mindar-image-target]');
-                const video = marker.querySelector('a-plane[src*="video"]');
+            if (event.target.classList.contains('play-button') || 
+                event.target.closest('.play-button')) {
                 
-                if (video) {
-                    const videoElement = document.querySelector(video.getAttribute('src'));
-                    if (videoElement.paused) {
-                        videoElement.play();
-                    } else {
-                        videoElement.pause();
+                const marker = event.target.closest('a-marker');
+                if (marker) {
+                    const markerIndex = this.markers.findIndex(m => m.element === marker);
+                    if (markerIndex !== -1) {
+                        const markerData = this.markers[markerIndex];
+                        if (markerData.content.type === 'video' && markerData.content.video) {
+                            if (markerData.content.video.paused) {
+                                markerData.content.video.play();
+                            } else {
+                                markerData.content.video.pause();
+                            }
+                        }
                     }
                 }
             }
         });
     }
 
-    setupGestureHandling() {
-        // Simplified gesture handling - removed complex custom components
-        console.log('Gesture handling setup completed');
+    setupUserInteraction() {
+        const playButton = document.querySelector('#playButton');
+        
+        const enableInteraction = () => {
+            if (!this.hasUserInteracted) {
+                this.hasUserInteracted = true;
+                
+                // Enable all videos
+                this.videos.forEach(video => {
+                    if (video) {
+                        video.muted = false;
+                        // Try to play videos that are on active markers
+                        const activeMarker = this.markers.find(m => 
+                            m.isTracked && m.content.video === video
+                        );
+                        if (activeMarker) {
+                            video.play().catch(e => console.log('Video play failed:', e));
+                        }
+                    }
+                });
+                
+                playButton.style.display = 'none';
+                console.log('User interaction enabled');
+            }
+        };
+
+        // Handle various interaction events
+        playButton.addEventListener('click', enableInteraction);
+        playButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            enableInteraction();
+        });
+
+        // Also enable on any document interaction
+        document.addEventListener('click', enableInteraction, { once: true });
+        document.addEventListener('touchend', enableInteraction, { once: true });
     }
 
     updateTrackingStatus(status) {
@@ -200,16 +251,19 @@ class ARBrochureApp {
     }
 
     toggleDebugMode() {
-        // This would toggle debug information display
-        console.log('Debug mode toggled');
-        // You can add debug UI here
+        // Toggle AR.js debug UI
+        const arjsSystem = this.scene.systems.arjs;
+        if (arjsSystem) {
+            const currentDebug = this.scene.getAttribute('arjs').debugUIEnabled;
+            this.scene.setAttribute('arjs', 'debugUIEnabled', !currentDebug);
+            console.log('Debug mode:', !currentDebug ? 'enabled' : 'disabled');
+        }
     }
 
     resetTracking() {
         // Reset all tracking
         this.activeMarkers.clear();
         this.markers.forEach(marker => {
-            marker.element.setAttribute('visible', false);
             marker.isTracked = false;
             if (marker.content.type === 'video' && marker.content.video) {
                 marker.content.video.pause();
@@ -217,11 +271,13 @@ class ARBrochureApp {
             }
         });
         this.updateTrackingStatus('ready');
+        console.log('Tracking reset');
     }
 
     startARExperience() {
-        // Additional setup when AR starts
         console.log('AR Experience Started');
+        // Additional setup when AR starts
+        this.updateTrackingStatus('ready');
     }
 }
 
