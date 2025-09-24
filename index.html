@@ -52,73 +52,12 @@
       "
     >
       <!-- Assets -->
-      <a-assets>
-        <!-- Videos for different pages -->
-        <video
-          id="video-page1"
-          src="./assets/videos/page1-video.mp4"
-          preload="auto"
-          loop="true"
-          crossorigin="anonymous"
-          playsinline
-          webkit-playsinline
-          muted
-        ></video>
-        <video
-          id="video-page3"
-          src="./assets/videos/page3-video.mp4"
-          preload="auto"
-          loop="true"
-          crossorigin="anonymous"
-          playsinline
-          webkit-playsinline
-          muted
-        ></video>
-        <video
-          id="video-page5"
-          src="./assets/videos/page5-video.mp4"
-          preload="auto"
-          loop="true"
-          crossorigin="anonymous"
-          playsinline
-          webkit-playsinline
-          muted
-        ></video>
-        <video
-          id="video-page7"
-          src="./assets/videos/page7-video.mp4"
-          preload="auto"
-          loop="true"
-          crossorigin="anonymous"
-          playsinline
-          webkit-playsinline
-          muted
-        ></video>
-
-        <!-- 3D Models for different pages -->
-        <a-asset-item
-          id="model-page2"
-          src="./assets/models/model1.gltf"
-        ></a-asset-item>
-        <a-asset-item
-          id="model-page4"
-          src="./assets/models/model2.gltf"
-        ></a-asset-item>
-        <a-asset-item
-          id="model-page6"
-          src="./assets/models/model3.gltf"
-        ></a-asset-item>
-        <a-asset-item
-          id="model-page8"
-          src="./assets/models/model4.gltf"
-        ></a-asset-item>
-
-        <!-- Sounds -->
-        <audio
-          id="detect-sound"
-          src="./assets/sounds/detect.mp3"
-          preload="auto"
-        ></audio>
+      <a-assets timeout="1000">
+        <!-- Placeholder text for missing assets -->
+        <a-mixin
+          id="placeholder-text"
+          text="color: white; align: center; width: 4; value: Asset Not Available"
+        ></a-mixin>
       </a-assets>
 
       <!-- Camera -->
@@ -136,32 +75,21 @@
         smoothTolerance="0.01"
         smoothThreshold="5"
       >
+        <!-- Placeholder for missing video -->
         <a-plane
-          src="#video-page1"
           position="0 0 0"
           rotation="-90 0 0"
           width="2"
           height="1.5"
-          material="transparent: true"
-        >
-        </a-plane>
-        <!-- Play button overlay -->
-        <a-circle
-          class="raycastable play-button"
-          position="0 0 0.01"
-          radius="0.2"
-          color="#FF6B6B"
+          color="#000000"
           material="transparent: true; opacity: 0.8"
-          animation="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; dir: alternate; loop: true; dur: 1000"
         >
-          <a-triangle
-            position="0.05 0 0.001"
-            scale="0.1 0.1 0.1"
-            rotation="0 0 90"
-            color="white"
-          >
-          </a-triangle>
-        </a-circle>
+          <a-text
+            value="Marker 1 Detected\nVideo Content"
+            position="0 0 0"
+            mixin="placeholder-text"
+          ></a-text>
+        </a-plane>
       </a-marker>
 
       <!-- Page 2: 3D Model -->
@@ -294,25 +222,6 @@
           material="transparent: true"
         >
         </a-plane>
-      </a-marker>
-
-      <!-- Page 8: 3D Model -->
-      <a-marker
-        id="marker-page8"
-        type="pattern"
-        url="./assets/markers/pattern-page8.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <a-gltf-model
-          src="#model-page8"
-          position="0 0.5 0"
-          scale="0.4 0.4 0.4"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 12000"
-        >
-        </a-gltf-model>
       </a-marker>
 
       <!-- Lighting -->
