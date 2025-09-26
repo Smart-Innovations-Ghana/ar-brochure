@@ -69,7 +69,7 @@
     <!-- Load Scanner -->
     <video
       id="vid5"
-      src="./assets/videos/load-canner.mp4"
+      src="./assets/videos/load-scanner.mp4"
       preload="auto"
       loop
       muted
@@ -133,7 +133,7 @@
       <a-entity
         mindar-image-target="targetIndex: 2"
         class="target-entity"
-        data-target-index="1"
+        data-target-index="2"
       >
         <a-video
           src="#vid2"
@@ -147,23 +147,6 @@
       </a-entity>
 
       <!-- TARGET 3: Drone Footage Video -->
-      <a-entity
-        mindar-image-target="targetIndex: 2"
-        class="target-entity"
-        data-target-index="2"
-      >
-        <a-video
-          src="#vid3"
-          position="0 0 0.1"
-          width="1"
-          height="0.5625"
-          rotation="0 0 0"
-          material="shader: flat;"
-          visible="false"
-        ></a-video>
-      </a-entity>
-
-      <!-- TARGET 3: Excavator Suite Video -->
       <a-entity
         mindar-image-target="targetIndex: 3"
         class="target-entity"
@@ -180,27 +163,28 @@
         ></a-video>
       </a-entity>
 
-      <!-- Proctuc Demo (Explosive Track) -->
+      <!-- TARGET 4: Excavator Suite Video -->
       <a-entity
         mindar-image-target="targetIndex: 4"
         class="target-entity"
-        data-target-index="1"
+        data-target-index="4"
       >
         <a-video
           src="#vid4"
           position="0 0 0.1"
           width="1"
-          height="1.066"
+          height="0.5625"
           rotation="0 0 0"
           material="shader: flat;"
           visible="false"
         ></a-video>
+      </a-entity>
 
-        <!-- Load Scanner -->
+      <!-- Load Scanner -->
       <a-entity
         mindar-image-target="targetIndex: 5"
         class="target-entity"
-        data-target-index="1"
+        data-target-index="5"
       >
         <a-video
           src="#vid5"
@@ -211,8 +195,6 @@
           material="shader: flat;"
           visible="false"
         ></a-video>
-      </a-entity>
-
       <!-- Goldbod -->
       <a-entity
         mindar-image-target="targetIndex: 6"
