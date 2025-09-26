@@ -1,262 +1,264 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
-    />
-    <title>Interactive AR Brochure</title>
-    <!-- AR.js and A-Frame -->
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <link rel="stylesheet" href="css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      #status {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        z-index: 10000;
+        font-family: Arial;
+      }
+    </style>
   </head>
   <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-      <div class="loading-content">
-        <div class="spinner"></div>
-        <p>Loading AR Experience...</p>
-        <div class="progress-bar">
-          <div class="progress"></div>
-        </div>
-      </div>
-    </div>
+    <div id="status">Initializing...</div>
 
-    <!-- Instructions Overlay -->
-    <div id="instructions" class="overlay">
-      <div class="instruction-content">
-        <h2>How to Use</h2>
-        <p>1. Point your camera at the brochure pages</p>
-        <p>2. Keep the page steady and well-lit</p>
-        <p>3. Tap to enable video playback</p>
-        <button id="start-ar">Start AR Experience</button>
-      </div>
-    </div>
+    <!-- Videos outside the scene (more reliable) -->
+    <video
+      id="vid0"
+      src="./assets/videos/contol-room.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <video
+      id="vid1"
+      src="./assets/videos/galamsey.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <video
+      id="vid2"
+      src="./assets/videos/drone-fottage.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <video
+      id="vid3"
+      src="./assets/videos/excavator-suite.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
 
-    <!-- AR Scene -->
     <a-scene
-      id="ar-scene"
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; maxTrack: 4;"
       vr-mode-ui="enabled: false"
-      renderer="logarithmicDepthBuffer: true; colorManagement: true; physicallyCorrectLights: true"
-      arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-      embedded
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      "
     >
-      <!-- Assets -->
-      <a-assets timeout="1000">
-        <!-- Placeholder text for missing assets -->
-        <a-mixin
-          id="placeholder-text"
-          text="color: white; align: center; width: 4; value: Asset Not Available"
-        ></a-mixin>
-      </a-assets>
+      <a-camera
+        active="true"
+        position="0 0 0"
+        look-controls="enabled: false"
+      ></a-camera>
 
-      <!-- Camera -->
-      <a-entity camera></a-entity>
-
-      <!-- AR Markers using pattern-based tracking -->
-
-      <!-- Page 1: Video Content -->
-      <a-marker
-        id="marker-page1"
-        type="pattern"
-        url="./assets/markers/pattern-page1.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
+      <!-- TARGET 0: Control Room Video -->
+      <a-entity
+        mindar-image-target="targetIndex: 0"
+        class="target-entity"
+        data-target-index="0"
       >
-        <!-- Placeholder for missing video -->
-        <a-plane
-          position="0 0 0"
-          rotation="-90 0 0"
-          width="2"
-          height="1.5"
-          color="#000000"
-          material="transparent: true; opacity: 0.8"
-        >
-          <a-text
-            value="Marker 1 Detected\nVideo Content"
-            position="0 0 0"
-            mixin="placeholder-text"
-          ></a-text>
-        </a-plane>
-      </a-marker>
-
-      <!-- Page 2: 3D Model -->
-      <a-marker
-        id="marker-page2"
-        type="pattern"
-        url="./assets/markers/pattern-page2.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <a-gltf-model
-          src="#model-page2"
-          position="0 0.5 0"
-          scale="0.3 0.3 0.3"
+        <a-video
+          src="#vid0"
+          position="0 0 0.1"
+          width="1"
+          height="0.5625"
           rotation="0 0 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
-        >
-        </a-gltf-model>
-        <!-- Info badge -->
-        <a-plane
-          position="0 1 0"
-          width="1.2"
-          height="0.2"
-          color="#4ECDC4"
-          material="transparent: true; opacity: 0.9"
-          text="value: 3D Model View; align: center; color: white; width: 6"
-        >
-        </a-plane>
-      </a-marker>
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
 
-      <!-- Page 3: Video Content -->
-      <a-marker
-        id="marker-page3"
-        type="pattern"
-        url="./assets/markers/pattern-page3.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
+      <!-- TARGET 1: Galamsey Video -->
+      <a-entity
+        mindar-image-target="targetIndex: 1"
+        class="target-entity"
+        data-target-index="1"
       >
-        <a-plane
-          src="#video-page3"
-          position="0 0 0"
-          rotation="-90 0 0"
-          width="2"
-          height="1.5"
-          material="transparent: true"
-        >
-        </a-plane>
-      </a-marker>
+        <a-video
+          src="#vid1"
+          position="0 0 0.1"
+          width="1"
+          height="1.066"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
 
-      <!-- Page 4: 3D Model -->
-      <a-marker
-        id="marker-page4"
-        type="pattern"
-        url="./assets/markers/pattern-page4.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
+      <!-- TARGET 2: Drone Footage Video -->
+      <a-entity
+        mindar-image-target="targetIndex: 2"
+        class="target-entity"
+        data-target-index="2"
       >
-        <a-gltf-model
-          src="#model-page4"
-          position="0 0.5 0"
-          scale="0.25 0.25 0.25"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
-        >
-        </a-gltf-model>
-      </a-marker>
+        <a-video
+          src="#vid2"
+          position="0 0 0.1"
+          width="1"
+          height="0.5625"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
 
-      <!-- Page 5: Video Content -->
-      <a-marker
-        id="marker-page5"
-        type="pattern"
-        url="./assets/markers/pattern-page5.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
+      <!-- TARGET 3: Excavator Suite Video -->
+      <a-entity
+        mindar-image-target="targetIndex: 3"
+        class="target-entity"
+        data-target-index="3"
       >
-        <a-plane
-          src="#video-page5"
-          position="0 0 0"
-          rotation="-90 0 0"
-          width="2"
-          height="1.5"
-          material="transparent: true"
-        >
-        </a-plane>
-      </a-marker>
-
-      <!-- Page 6: 3D Model -->
-      <a-marker
-        id="marker-page6"
-        type="pattern"
-        url="./assets/markers/pattern-page6.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <a-gltf-model
-          src="#model-page6"
-          position="0 0.5 0"
-          scale="0.35 0.35 0.35"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
-          animation__bounce="property: position; from: 0 0.5 0; to: 0 0.7 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"
-        >
-        </a-gltf-model>
-      </a-marker>
-
-      <!-- Page 7: Video Content -->
-      <a-marker
-        id="marker-page7"
-        type="pattern"
-        url="./assets/markers/pattern-page7.patt"
-        smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.01"
-        smoothThreshold="5"
-      >
-        <a-plane
-          src="#video-page7"
-          position="0 0 0"
-          rotation="-90 0 0"
-          width="2"
-          height="1.5"
-          material="transparent: true"
-        >
-        </a-plane>
-      </a-marker>
-
-      <!-- Lighting -->
-      <a-light type="ambient" intensity="0.4"></a-light>
-      <a-light type="directional" position="1 1 0" intensity="0.6"></a-light>
+        <a-video
+          src="#vid3"
+          position="0 0 0.1"
+          width="1"
+          height="0.5625"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
     </a-scene>
 
-    <!-- UI Controls -->
-    <div id="ui-controls">
-      <button id="toggle-debug" class="control-btn">🔧</button>
-      <button id="reset-tracking" class="control-btn">🔄</button>
-      <div id="tracking-status">Ready</div>
-    </div>
+    <script>
+      const scene = document.querySelector("a-scene");
+      const status = document.getElementById("status");
+      const activeTargets = new Set();
 
-    <!-- Play button overlay for video interaction -->
-    <div
-      id="playButton"
-      style="
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 15px 30px;
-        border-radius: 25px;
-        z-index: 1000;
-        cursor: pointer;
-        font-size: 16px;
-        border: none;
-      "
-    >
-      Tap to Enable Video & Audio
-    </div>
+      // Safe event handling with error checking
+      scene.addEventListener("targetFound", (event) => {
+        try {
+          // Method 1: Try to get targetIndex from event detail
+          let targetIndex = event.detail?.targetIndex;
 
-    <script src="js/app.js"></script>
+          // Method 2: If detail is null, get from the target entity
+          if (targetIndex === undefined || targetIndex === null) {
+            const targetEntity = event.target;
+            targetIndex = targetEntity.getAttribute("data-target-index");
+          }
+
+          // Method 3: Last resort - parse from component
+          if (targetIndex === undefined || targetIndex === null) {
+            const targetComponent =
+              event.target.components["mindar-image-target"];
+            if (targetComponent) {
+              targetIndex = targetComponent.targetIndex;
+            }
+          }
+
+          if (targetIndex !== undefined && targetIndex !== null) {
+            targetIndex = parseInt(targetIndex);
+            activeTargets.add(targetIndex);
+
+            // Show and play video
+            const targetEntity = event.target;
+            const videoElement = targetEntity.querySelector("a-video");
+            const videoSource = document.getElementById(`vid${targetIndex}`);
+
+            if (videoElement && videoSource) {
+              videoElement.setAttribute("visible", true);
+              videoSource.play().catch((error) => {
+                console.log(`Video ${targetIndex} play failed:`, error);
+              });
+            }
+
+            updateStatus();
+          } else {
+            console.warn("Could not determine target index from event:", event);
+          }
+        } catch (error) {
+          console.error("Error in targetFound event:", error);
+        }
+      });
+
+      scene.addEventListener("targetLost", (event) => {
+        try {
+          let targetIndex = event.detail?.targetIndex;
+
+          if (targetIndex === undefined || targetIndex === null) {
+            const targetEntity = event.target;
+            targetIndex = targetEntity.getAttribute("data-target-index");
+          }
+
+          if (targetIndex === undefined || targetIndex === null) {
+            const targetComponent =
+              event.target.components["mindar-image-target"];
+            if (targetComponent) {
+              targetIndex = targetComponent.targetIndex;
+            }
+          }
+
+          if (targetIndex !== undefined && targetIndex !== null) {
+            targetIndex = parseInt(targetIndex);
+            activeTargets.delete(targetIndex);
+
+            // Hide and pause video
+            const targetEntity = event.target;
+            const videoElement = targetEntity.querySelector("a-video");
+            const videoSource = document.getElementById(`vid${targetIndex}`);
+
+            if (videoElement && videoSource) {
+              videoElement.setAttribute("visible", false);
+              videoSource.pause();
+              videoSource.currentTime = 0;
+            }
+
+            updateStatus();
+          }
+        } catch (error) {
+          console.error("Error in targetLost event:", error);
+        }
+      });
+
+      scene.addEventListener("arReady", () => {
+        status.textContent = "✅ AR Ready - Point camera at target";
+      });
+
+      function updateStatus() {
+        if (activeTargets.size === 0) {
+          status.textContent = "🔍 Point camera at any target image";
+          status.style.background = "rgba(0, 0, 0, 0.8)";
+        } else {
+          const targets = Array.from(activeTargets)
+            .map((t) => t + 1)
+            .join(", ");
+          status.textContent = `🎯 Tracking target(s): ${targets}`;
+          status.style.background = "green";
+        }
+      }
+
+      // Alternative: Use component-based approach (more reliable)
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add click handler for iOS autoplay
+        document.body.addEventListener(
+          "click",
+          function () {
+            // This helps with iOS autoplay restrictions
+            const videos = document.querySelectorAll("video");
+            videos.forEach((video) => {
+              video
+                .play()
+                .catch((e) =>
+                  console.log("Pre-play attempt failed (normal):", e)
+                );
+            });
+          },
+          { once: true }
+        );
+      });
+    </script>
   </body>
 </html>
