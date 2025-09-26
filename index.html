@@ -21,33 +21,64 @@
     <div id="status">Initializing...</div>
 
     <!-- Videos outside the scene (more reliable) -->
+    <!-- Galamsey Video -->
     <video
       id="vid0"
-      src="./assets/videos/contol-room.mp4"
-      preload="auto"
-      loop
-      muted
-      style="display: none"
-    ></video>
-    <video
-      id="vid1"
       src="./assets/videos/galamsey.mp4"
       preload="auto"
       loop
       muted
       style="display: none"
     ></video>
+    <!-- Excavator Suite (How it works) -->
+    <video
+      id="vid1"
+      src="./assets/videos/excavator-suite.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <!-- Control Room -->
     <video
       id="vid2"
+      src="./assets/videos/contol-room.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <!-- Spatial Detection -->
+    <video
+      id="vid3"
       src="./assets/videos/drone-fottage.mp4"
       preload="auto"
       loop
       muted
       style="display: none"
     ></video>
+    <!-- Product Demo -->
     <video
-      id="vid3"
-      src="./assets/videos/excavator-suite.mp4"
+      id="vid4"
+      src="./assets/videos/explosives-truck.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <!-- Load Scanner -->
+    <video
+      id="vid5"
+      src="./assets/videos/load-canner.mp4"
+      preload="auto"
+      loop
+      muted
+      style="display: none"
+    ></video>
+    <!-- Goldbod -->
+    <video
+      id="vid6"
+      src="./assets/videos/goldbod.mp4"
       preload="auto"
       loop
       muted
@@ -64,7 +95,7 @@
         look-controls="enabled: false"
       ></a-camera>
 
-      <!-- TARGET 0: Control Room Video -->
+      <!-- TARGET 0: Galamsey Video -->
       <a-entity
         mindar-image-target="targetIndex: 0"
         class="target-entity"
@@ -81,7 +112,7 @@
         ></a-video>
       </a-entity>
 
-      <!-- TARGET 1: Galamsey Video -->
+      <!-- Target 1: Excavator Suite (How it wroks) -->
       <a-entity
         mindar-image-target="targetIndex: 1"
         class="target-entity"
@@ -98,14 +129,31 @@
         ></a-video>
       </a-entity>
 
-      <!-- TARGET 2: Drone Footage Video -->
+      <!-- TARGET 2: Control Room Video -->
+      <a-entity
+        mindar-image-target="targetIndex: 2"
+        class="target-entity"
+        data-target-index="1"
+      >
+        <a-video
+          src="#vid2"
+          position="0 0 0.1"
+          width="1"
+          height="1.066"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
+
+      <!-- TARGET 3: Drone Footage Video -->
       <a-entity
         mindar-image-target="targetIndex: 2"
         class="target-entity"
         data-target-index="2"
       >
         <a-video
-          src="#vid2"
+          src="#vid3"
           position="0 0 0.1"
           width="1"
           height="0.5625"
@@ -131,6 +179,55 @@
           visible="false"
         ></a-video>
       </a-entity>
+
+      <!-- Proctuc Demo (Explosive Track) -->
+      <a-entity
+        mindar-image-target="targetIndex: 4"
+        class="target-entity"
+        data-target-index="1"
+      >
+        <a-video
+          src="#vid4"
+          position="0 0 0.1"
+          width="1"
+          height="1.066"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+
+        <!-- Load Scanner -->
+      <a-entity
+        mindar-image-target="targetIndex: 5"
+        class="target-entity"
+        data-target-index="1"
+      >
+        <a-video
+          src="#vid5"
+          position="0 0 0.1"
+          width="1"
+          height="1.066"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
+      </a-entity>
+
+      <!-- Goldbod -->
+      <a-entity
+        mindar-image-target="targetIndex: 6"
+        class="target-entity"
+        data-target-index="1"
+      >
+        <a-video
+          src="#vid6"
+          position="0 0 0.1"
+          width="1"
+          height="1.066"
+          rotation="0 0 0"
+          material="shader: flat;"
+          visible="false"
+        ></a-video>
     </a-scene>
 
     <script>
