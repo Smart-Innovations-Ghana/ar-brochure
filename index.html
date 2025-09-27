@@ -60,7 +60,7 @@
     <!-- Product Demo -->
     <video
       id="vid4"
-      src="./assets/videos/explosives-truck.mp4"
+      src="./assets/videos/excavator-suite.mp4"
       preload="auto"
       loop
       muted
@@ -105,7 +105,7 @@
           src="#vid0"
           position="0 0 0.1"
           width="1"
-          height="0.5625"
+          height="1.066"
           rotation="0 0 0"
           material="shader: flat;"
           visible="false"
@@ -139,7 +139,7 @@
           src="#vid2"
           position="0 0 0.1"
           width="1"
-          height="1.066"
+          height="0.552"
           rotation="0 0 0"
           material="shader: flat;"
           visible="false"
@@ -190,7 +190,7 @@
           src="#vid5"
           position="0 0 0.1"
           width="1"
-          height="1.066"
+          height="1"
           rotation="0 0 0"
           material="shader: flat;"
           visible="false"
@@ -199,13 +199,13 @@
       <a-entity
         mindar-image-target="targetIndex: 6"
         class="target-entity"
-        data-target-index="1"
+        data-target-index="6"
       >
         <a-video
           src="#vid6"
           position="0 0 0.1"
           width="1"
-          height="1.066"
+          height="0.552"
           rotation="0 0 0"
           material="shader: flat;"
           visible="false"
@@ -314,8 +314,9 @@
           const targets = Array.from(activeTargets)
             .map((t) => t + 1)
             .join(", ");
-          status.textContent = `🎯 Tracking target(s): ${targets}`;
+          status.textContent = `🎯 Hold Still. \nTap the Screen if video does not auto play`;
           status.style.background = "green";
+          status.style.borderRadius = "10px"
         }
       }
 
